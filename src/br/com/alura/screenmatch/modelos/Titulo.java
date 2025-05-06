@@ -1,12 +1,11 @@
 package br.com.alura.screenmatch.modelos;
 
+import br.com.alura.screenmatch.exceptions.ErroDeConversaoException;
 import com.google.gson.annotations.SerializedName;
 
 public class Titulo implements Comparable<Titulo> {
 
-    @SerializedName("Title")
     private String nome;
-    @SerializedName("Year")
     private int anoDeLancamento;
     private boolean incluidoNoPlano;
     private double somaDasAvaliacoes;
@@ -20,6 +19,11 @@ public class Titulo implements Comparable<Titulo> {
 
     public Titulo(TituloOMDb meuTituloOmdb) {
         this.nome = meuTituloOmdb.title();
+
+        if (meuTituloOmdb.year().length() > 4) {
+            throw new ErroDeConversaoException("Não foi possível checar o ano de lançamento!");
+        }
+
         this.anoDeLancamento = Integer.valueOf(meuTituloOmdb.year());
         this.duracaoEmMinutos = Integer.valueOf(meuTituloOmdb.runtime().substring(0, 2));
     }
